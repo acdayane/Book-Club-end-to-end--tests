@@ -12,7 +12,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
-import java.util.random.RandomGenerator;
 
 public class UserStepDefinitions {
 
@@ -59,15 +58,15 @@ public class UserStepDefinitions {
 
     @Then("notify must be not null")
     public void notifyEmailMustBeNotNull() {
-        String failReason = response.jsonPath().get("errors[0].document");
+        String failReason = response.jsonPath().get("errors[0].email");
         Assertions.assertEquals("must not be null", failReason);
     }
 
     @And("user is still unknown")
     public void userIsStillUnknown() {
-        response = request.when().get("/customers?name="+customer.getName());
+        response = request.when().get("/user/email/" + user.getEmail());
         response.then().statusCode(200);
-        List<Customer> found = response.jsonPath().getList("$");
+        List<User> found = response.jsonPath().getList("$");
         Assertions.assertTrue(found.isEmpty());
     }
 
