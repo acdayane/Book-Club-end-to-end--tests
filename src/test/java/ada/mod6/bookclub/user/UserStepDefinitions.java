@@ -1,6 +1,5 @@
 package ada.mod6.bookclub.user;
 
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -10,8 +9,6 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
-
-import java.util.List;
 
 public class UserStepDefinitions {
 
@@ -29,11 +26,12 @@ public class UserStepDefinitions {
         user.setPassword(RandomStringUtils.randomAlphanumeric(6));
     }
 
-    @Given("user without email")
-    public void userWithoutEmail() {
+    @Given("user with small password")
+    public void userWitSmallPassword() {
         user = new User();
         user.setName(RandomStringUtils.randomAlphabetic(10));
-        user.setPassword(RandomStringUtils.randomAlphanumeric(6));
+        user.setEmail(RandomStringUtils.randomAlphabetic(10) + "endtoend@test.com");
+        user.setPassword("123");
     }
 
     @When("user is registered with success")
@@ -52,22 +50,14 @@ public class UserStepDefinitions {
     public void userIsKnown() {
         response = request.when().get("/user/email/" + user.getEmail());
         response.then().statusCode(200);
-        String email = response.jsonPath().get("[0].email");
+        String email = response.jsonPath().get("$.email");
         Assertions.assertEquals(user.getEmail(), email);
     }
 
-    @Then("notify must be not null")
-    public void notifyEmailMustBeNotNull() {
-        String failReason = response.jsonPath().get("errors[0].email");
-        Assertions.assertEquals("must not be null", failReason);
-    }
-
-    @And("user is still unknown")
+    @Then("user is still unknown")
     public void userIsStillUnknown() {
         response = request.when().get("/user/email/" + user.getEmail());
-        response.then().statusCode(200);
-        List<User> found = response.jsonPath().getList("$");
-        Assertions.assertTrue(found.isEmpty());
+        response.then().statusCode(403);
     }
 
 }

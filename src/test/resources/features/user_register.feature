@@ -5,8 +5,7 @@ Feature: User register
     When user is registered with success
     Then user is known
 
-  Scenario: User without email
-    Given user without email
+  Scenario: User with small password
+    Given user with small password
     When user fail to register
-    Then notify must be not null
-    And user is still unknown
+    Then user is still unknown
