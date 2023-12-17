@@ -1,4 +1,4 @@
-package br.ada.ecommerce.test;
+package ada.mod6.bookclub;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;

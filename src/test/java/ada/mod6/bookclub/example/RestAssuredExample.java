@@ -1,4 +1,4 @@
-package br.ada.ecommerce.test.example;
+package ada.mod6.bookclub.example;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
